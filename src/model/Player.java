@@ -47,5 +47,8 @@ public abstract class Player {
 		}
 	}
 	
-	
+	public ArrayList<Piece> getPiecesArraylist()
+	{
+		return pieces;
+	}
 }

@@ -165,4 +165,10 @@ public abstract class Piece{
 	
 	public abstract boolean challenge(Piece enemy);
 	
+	public void setProbabilities(double[] prob) 
+	{
+		for(int x = 0; x < 10; x++)
+			probability[1][x] = prob[x];
+	}
+	
 }

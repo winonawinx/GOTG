@@ -7,10 +7,15 @@ public class Calculation {
 
 	private double currWeight;
 	private double addedWeight;
+	private double subtractedWeight = 0;
 	private double remainingWeight;
 	private double totalAmtSubtracted;
 	private double result;
-	private double newProbabilities[][];
+	private double oldProbabilities[][];
+	private double currProbabilities[][] = new double[2][10];
+	private double otherProbabilities[][] = new double[10][10];
+	private double otherAddedWeight;
+	private double columnWeightRemaining = 0;
 	
 	public double[][] computeStats(Player player, Piece pumatay)
 	{
@@ -23,6 +28,7 @@ public class Calculation {
 			pieces.add((Piece)iterator.next());
 		}
 		
+		// looking for which piece is the killer
 		for(int x = 0; x < pieces.size();x++)
 		{
 			if(pieces.get(x).equals(pumatay))
@@ -33,37 +39,21 @@ public class Calculation {
 				
 		}
 		
-		newProbabilities = killer.getProbability();
-		comparePieces(killer);
-		
-		//newProbabilities = player;
+		oldProbabilities = killer.getProbability();
+		//comparePieces(killer);
 		
 		
+		// comparepieces start here
 		
-		return newProbabilities;
-	}
-	
-	/*public double[][] computeStats(Piece player)
-	{
-		newProbabilities = player.getProbability();
-		
-		
-		
-		return null;
-	}*/
-	
-	
-	public void comparePieces(Piece killer)
-	{
 		totalAmtSubtracted = 0;
-		Iterator iterator = killer.getKills();
+		iterator = killer.getKills();
 		ArrayList<Piece> kList = new ArrayList<Piece>();
 		double[][] killerprobability = killer.getProbability();
 		while(iterator.hasNext())
 		{
 			kList.add((Piece)iterator.next());
 		}
-		
+		//sets 0 to pieces it can't be
 		if(kList.get(kList.size()-1).getType() != 2)
 		{
 			for(int x = 0; x < 10; x++)
@@ -87,7 +77,8 @@ public class Calculation {
 			}
 		}
 			
-		addedWeight = 1-totalAmtSubtracted;
+		// whatever is left of the weights in that row (piece probability)
+		remainingWeight = 1-totalAmtSubtracted;
 		
 		//actual computation
 		//note: kulang yung if else stamenet para sa total subtracted or kung total amount added gagamitin sa computatuion.
@@ -96,12 +87,47 @@ public class Calculation {
 			if(killerprobability[1][x] != 0)
 			{
 				currWeight = killerprobability[1][x];
-				
-				
-				
-				
+				addedWeight = totalAmtSubtracted*currWeight/remainingWeight;
+				result = currWeight + addedWeight;
 			}
 		}
+		
+		player.getPiecesArraylist().get(killerindex).setProbabilities(killerprobability[1]);
+		
+		currProbabilities = player.getPiecesArraylist().get(killerindex).getProbability();
+		
+		//solving for the probs in the remaining cells 
+		
+		
+		for(int x = 0; x < 10; x++) // columns
+		{
+			columnWeightRemaining = 1 - currProbabilities[killerindex][x];
+			for(int y = 0; y < 10; y++) // rows
+			{
+				if(y != killerindex)
+				{
+					otherProbabilities = player.getPiecesArraylist().get(y).getProbability();
+					if(oldProbabilities[1][y] < currProbabilities[1][y])
+					{
+						addedWeight = currProbabilities[1][y] - otherProbabilities[1][y];
+					}
+					if(oldProbabilities[1][y] > currProbabilities[1][y])
+					{
+						subtractedWeight = oldProbabilities[1][y] - currProbabilities[1][y];
+					}
+					otherAddedWeight = addedWeight * otherProbabilities[1][y]/columnWeightRemaining;
+					otherProbabilities[1][y] = otherProbabilities[1][y] + otherAddedWeight;
+				}
+			}
+						
+		}
+		
+		return oldProbabilities;
+	}
+	
+	public void comparePieces(Piece killer)
+	{
+		
 	}
 	
 }
