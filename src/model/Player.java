@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 public abstract class Player {
 	private ArrayList<Piece> pieces;
+	private Player enemy;
 	private boolean turn;
 	
 	public Player(){
@@ -16,12 +17,20 @@ public abstract class Player {
 		pieces.add(p);
 	}
 	
+	public Player getEnemy(){
+		return enemy;
+	}
+	
 	public Iterator getPieces(){
 		return pieces.iterator();
 	}
 	
 	public boolean isTurn(){
 		return turn;
+	}
+
+	public void setPlayerEnemy(Player enemy){
+		this.enemy=enemy;
 	}
 	
 	public void setTurn(boolean status){

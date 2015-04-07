@@ -43,6 +43,7 @@ public abstract class Piece{
 	public void setProbability(double[][] probability) {
 		this.probability = probability;
 	}
+	
 
 	public Piece(String onPath, String name, int type, Point loc, Player master)
 	{
@@ -134,6 +135,10 @@ public abstract class Piece{
 	
 	public void addKill(Piece pc){
 		kills.add(pc);
+		/*System.out.println("Killer is " + pc.getKiller().getName());
+		CalculateStats calc = new CalculateStats();
+		System.out.println("Shayane ");
+		probability = calc.computeStats(master.getEnemy(), killer);*/
 	}
 	
 	public Iterator getKills(){
@@ -169,9 +174,6 @@ public abstract class Piece{
 	}
 	
 	public String getStats(){
-		CalculateStats calc = new CalculateStats();
-		System.out.println("Shayane ");
-		probability = calc.computeStats(master, killer);
 		String st="";
 		st+= "General of the Army: "+ probability[1][0]+"%\n";
 		st+= "Lieutenant General: "+probability[1][1] +"%\n";
@@ -179,7 +181,7 @@ public abstract class Piece{
 		st+= "Captain: "+probability[1][3]+"%\n";
 		st+= "First Lieutenant: "+probability[1][4]+"%\n";
 		st+= "Spy: "+probability[1][8]+"%\n";
-		st+= "Private: "+probability[1][5] + probability[1][6] + probability[1][7]+"%\n";
+		st+= "Private: "+ (probability[1][5] + probability[1][6] + probability[1][7]) +"%\n";
 		st+= "Flag: "+probability[1][9]+"%\n";
 		return st;
 	}

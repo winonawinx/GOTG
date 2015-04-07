@@ -26,6 +26,9 @@ public class Control {
 		players = new Player[2];
 		players[0] = new Black();
 		players[1] = new White();
+		
+		players[0].setPlayerEnemy(players[1]);
+		players[1].setPlayerEnemy(players[0]);
 		players[0].setTurn(true);
 		gui = new Gui(this, players);
 		gui.initializeBoard();
@@ -95,6 +98,8 @@ public class Control {
 									selectedCell.getPiece()) == selectedCell
 									.getPiece().challenge(cell.getPiece())
 									&& !(cell.getPiece() instanceof Flag)) {
+								if(cell.getPiece()==null) System.out.println("a");
+								if(selectedCell.getPiece()==null) System.out.println("b");
 								cell.getPiece()
 										.addKill(selectedCell.getPiece());
 								selectedCell.getPiece()
@@ -103,8 +108,10 @@ public class Control {
 								selectedCell.getPiece().setDead(cell.getPiece());
 							} else if (selectedCell.getPiece().challenge(
 									cell.getPiece())) {
+								if(selectedCell.getPiece()==null) System.out.println("c");
 								selectedCell.getPiece()
 										.addKill(cell.getPiece());
+								
 								cell.getPiece().setDead(selectedCell.getPiece());
 								selectedCell.getPiece().setLocation(
 										cell.getPoint());
@@ -113,6 +120,7 @@ public class Control {
 											.getMaster());
 								}
 							} else {
+								if(cell.getPiece()==null) System.out.println("d");
 								cell.getPiece()
 										.addKill(selectedCell.getPiece());
 								selectedCell.getPiece().setDead(cell.getPiece());
