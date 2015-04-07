@@ -42,15 +42,15 @@ public class CalculateStats
 		}
 		
 		//look for the killer from the player's pieces
-		/*for(int x = 0; x < pieces.size();x++)
+		for(int x = 0; x < pieces.size();x++)
 		{
 			if(pieces.get(x).equals(pumatay))
 			{
 				killer = pieces.get(x);
 				killerindex = x;
 			}
-		}*/
-		killer = pumatay;
+		}
+		//killer = pumatay;
 		System.out.println("Killer is " + pumatay.getName());
 		killerOldProbabilities = killer.getProbability();
 		
@@ -67,6 +67,13 @@ public class CalculateStats
 		iterator = killer.getKills();
 		ArrayList<Piece> kList = new ArrayList<Piece>();
 		double[][] killerprobability = killer.getProbability();
+		
+		System.out.println("killer probs table");
+		for(int x = 0; x < 10; x++)
+		{
+			System.out.println("Weight at " + x +"is " + killerprobability[0][x]);
+		}
+		
 		while(iterator.hasNext())
 		{
 			kList.add((Piece)iterator.next());
@@ -76,8 +83,9 @@ public class CalculateStats
 		{
 			for(int x = 0; x < 10; x++)
 			{
-				if(kList.get(kList.size()-1).getType() > killerprobability[0][x])
+				if(kList.get(kList.size()-1).getType() >= killerprobability[0][x] && killerprobability[0][x] != 2)
 				{
+					
 					killerTotalAmtSubtracted += killerprobability[1][x];
 					killerprobability[1][x] = 0;
 				}
@@ -87,7 +95,7 @@ public class CalculateStats
 		{
 			for(int x = 0; x < 10; x++)
 			{
-				if(kList.get(kList.size()-1).getType() %2 == 0)
+				if(kList.get(kList.size()-1).getType() % 2 != 0)
 				{
 					killerTotalAmtSubtracted += killerprobability[1][x];
 					killerprobability[1][x] = 0;

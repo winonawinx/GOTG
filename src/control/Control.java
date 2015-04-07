@@ -93,37 +93,37 @@ public class Control {
 								switchTurn();
 							}
 
-						} else if (gui.isWarn(cell.getPoint())) {
-							if (cell.getPiece().challenge(
-									selectedCell.getPiece()) == selectedCell
-									.getPiece().challenge(cell.getPiece())
-									&& !(cell.getPiece() instanceof Flag)) {
+						} else if (gui.isWarn(cell.getPoint()))
+						{
+							if (cell.getPiece().challenge(selectedCell.getPiece()) == selectedCell.getPiece().challenge(cell.getPiece())
+									&& !(cell.getPiece() instanceof Flag))
+							{
 								if(cell.getPiece()==null) System.out.println("a");
 								if(selectedCell.getPiece()==null) System.out.println("b");
-								cell.getPiece()
-										.addKill(selectedCell.getPiece());
-								selectedCell.getPiece()
-										.addKill(cell.getPiece());
 								cell.getPiece().setDead(selectedCell.getPiece());
 								selectedCell.getPiece().setDead(cell.getPiece());
-							} else if (selectedCell.getPiece().challenge(
-									cell.getPiece())) {
+								cell.getPiece().addKill(selectedCell.getPiece());
+								selectedCell.getPiece().addKill(cell.getPiece());							}
+							else if (selectedCell.getPiece().challenge(cell.getPiece()))
+							{
 								if(selectedCell.getPiece()==null) System.out.println("c");
+
+								cell.getPiece().setDead(selectedCell.getPiece());
 								selectedCell.getPiece()
 										.addKill(cell.getPiece());
-								
-								cell.getPiece().setDead(selectedCell.getPiece());
 								selectedCell.getPiece().setLocation(
 										cell.getPoint());
 								if (cell.getPiece() instanceof Flag) {
 									gui.setWinner(selectedCell.getPiece()
 											.getMaster());
 								}
-							} else {
+							}
+							else{
 								if(cell.getPiece()==null) System.out.println("d");
+
+								selectedCell.getPiece().setDead(cell.getPiece());
 								cell.getPiece()
 										.addKill(selectedCell.getPiece());
-								selectedCell.getPiece().setDead(cell.getPiece());
 
 								if (selectedCell.getPiece() instanceof Flag) {
 									gui.setWinner(cell.getPiece().getMaster());
