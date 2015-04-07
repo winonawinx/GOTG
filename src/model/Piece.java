@@ -30,6 +30,8 @@ public abstract class Piece{
 	private Player master;
 	private boolean isPlaying;
 	
+	private Piece killer;
+	
 	
 	//WINONA
 	private double probability[][];
@@ -46,7 +48,7 @@ public abstract class Piece{
 	{
 		//WINONA
 		probability = new double[2][10];
-		probability[0][0] = 1;
+		/*probability[0][0] = 1;
 		probability[0][1] = 2;
 		probability[0][2] = 3;
 		probability[0][3] = 3;
@@ -55,7 +57,18 @@ public abstract class Piece{
 		probability[0][6] = 10;
 		probability[0][7] = 12;
 		probability[0][8] = 14;
-		probability[0][9] = 16;
+		probability[0][9] = 16;*/
+		
+		probability[0][0] = 16;
+		probability[0][1] = 14;
+		probability[0][2] = 12;
+		probability[0][3] = 10;
+		probability[0][4] = 8;
+		probability[0][5] = 3;
+		probability[0][6] = 3;
+		probability[0][7] = 3;
+		probability[0][8] = 2;
+		probability[0][9] = 1;
 		
 		probability[1][0] = (double) 0.1;
 		probability[1][1] = (double) 0.1;
@@ -98,8 +111,13 @@ public abstract class Piece{
 		return master;
 	}
 	
-	public void setAlive(boolean status){
-		isAlive=status;
+	public void setDead(Piece killer){
+		isAlive=false;
+		this.killer=killer;
+	}
+	
+	public Piece getKiller(){
+		return killer;
 	}
 
 	public boolean isAlive() {
@@ -151,15 +169,18 @@ public abstract class Piece{
 	}
 	
 	public String getStats(){
+		CalculateStats calc = new CalculateStats();
+		System.out.println("Shayane ");
+		probability = calc.computeStats(master, killer);
 		String st="";
-		st+= "General of the Army: "+10+"%\n";
-		st+= "Lieutenant General: "+10+"%\n";
-		st+= "Colonel: "+10+"%\n";
-		st+= "Captain: "+10+"%\n";
-		st+= "First Lieutenant: "+10+"%\n";
-		st+= "Spy: "+10+"%\n";
-		st+= "Private: "+30+"%\n";
-		st+= "Flag: "+10+"%\n";
+		st+= "General of the Army: "+ probability[1][0]+"%\n";
+		st+= "Lieutenant General: "+probability[1][1] +"%\n";
+		st+= "Colonel: "+ probability[1][2]+"%\n";
+		st+= "Captain: "+probability[1][3]+"%\n";
+		st+= "First Lieutenant: "+probability[1][4]+"%\n";
+		st+= "Spy: "+probability[1][8]+"%\n";
+		st+= "Private: "+probability[1][5] + probability[1][6] + probability[1][7]+"%\n";
+		st+= "Flag: "+probability[1][9]+"%\n";
 		return st;
 	}
 	

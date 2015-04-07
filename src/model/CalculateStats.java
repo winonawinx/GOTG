@@ -42,15 +42,16 @@ public class CalculateStats
 		}
 		
 		//look for the killer from the player's pieces
-		for(int x = 0; x < pieces.size();x++)
+		/*for(int x = 0; x < pieces.size();x++)
 		{
 			if(pieces.get(x).equals(pumatay))
 			{
 				killer = pieces.get(x);
 				killerindex = x;
 			}
-		}
-		
+		}*/
+		killer = pumatay;
+		System.out.println("Killer is " + pumatay.getName());
 		killerOldProbabilities = killer.getProbability();
 		
 		//placing the pieces' probabilities in the 10x10 array
@@ -126,13 +127,13 @@ public class CalculateStats
 			{
 				if(x != killerindex) //if it isn't in the killer's row
 				{
-					if(killerOldProbabilities[1][y] < killerNewProbabilities[1][y]) // addition in the probability occured
+					if(killerOldProbabilities[1][y] < killerNewProbabilities[1][y]) // addition in the probability of the killer occured
 					{
-						killerAddedWeight = killerNewProbabilities[1][y] - currProbabilities[killerindex][y];
+						killerAddedWeight = killerNewProbabilities[1][y] - currProbabilities[killerindex][y] * -1; //will subtract in the others
 					}
-					else if(killerOldProbabilities[1][y] > killerNewProbabilities[1][y]) // subtraction in the probability occured
+					else if(killerOldProbabilities[1][y] > killerNewProbabilities[1][y]) // subtraction in the probability of the killer occured
 					{
-						killerAddedWeight = currProbabilities[killerindex][y] - killerNewProbabilities[1][y];
+						killerAddedWeight = currProbabilities[killerindex][y] - killerNewProbabilities[1][y]; // will add in the others
 					}
 					otherAddedWeight = killerAddedWeight * currProbabilities[x][y]/columnWeightRemaining;
 					currProbabilities[x][y] = currProbabilities[x][y] + otherAddedWeight;
@@ -147,7 +148,7 @@ public class CalculateStats
 			player.getPiecesArraylist().get(x).setProbabilities(currProbabilities[x]);
 		}
 	
-		return currProbabilities;
+		return killerNewProbabilities;
 		
 	}
 	

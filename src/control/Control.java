@@ -99,13 +99,13 @@ public class Control {
 										.addKill(selectedCell.getPiece());
 								selectedCell.getPiece()
 										.addKill(cell.getPiece());
-								cell.getPiece().setAlive(false);
-								selectedCell.getPiece().setAlive(false);
+								cell.getPiece().setDead(selectedCell.getPiece());
+								selectedCell.getPiece().setDead(cell.getPiece());
 							} else if (selectedCell.getPiece().challenge(
 									cell.getPiece())) {
 								selectedCell.getPiece()
 										.addKill(cell.getPiece());
-								cell.getPiece().setAlive(false);
+								cell.getPiece().setDead(selectedCell.getPiece());
 								selectedCell.getPiece().setLocation(
 										cell.getPoint());
 								if (cell.getPiece() instanceof Flag) {
@@ -115,7 +115,7 @@ public class Control {
 							} else {
 								cell.getPiece()
 										.addKill(selectedCell.getPiece());
-								selectedCell.getPiece().setAlive(false);
+								selectedCell.getPiece().setDead(cell.getPiece());
 
 								if (selectedCell.getPiece() instanceof Flag) {
 									gui.setWinner(cell.getPiece().getMaster());
