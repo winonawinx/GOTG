@@ -180,7 +180,9 @@ public abstract class Piece{
 		st+= "Captain: "+probability[1][3]+"%\n";
 		st+= "First Lieutenant: "+probability[1][4]+"%\n";
 		st+= "Spy: "+probability[1][8]+"%\n";
-		st+= "Private: "+ (probability[1][5] + probability[1][6] + probability[1][7]) +"%\n";
+		st+= "Private 1: "+ probability[1][5] + "%\n";
+		st+= "Private 2: " + probability[1][6] + "%\n"; 
+		st+= "Private 3: " + probability[1][7] +"%\n";
 		st+= "Flag: "+probability[1][9]+"%\n";
 		return st;
 	}
