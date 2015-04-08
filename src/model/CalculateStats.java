@@ -41,44 +41,6 @@ public class CalculateStats
 	// returns the 10x10 array
 	public double[][] computeStats(Player player, Piece pumatay)
 	{
-		// reset stats
-		
-		//killer variables
-		killerCurrentWeight = 0;
-		killerAddedWeight = 0;
-		killerSubtractedWeight = 0;
-		killerRemainingWeight = 0;
-		killerTotalAmtSubtracted = 0;
-		killerResult = 0;
-		killerOldProbabilities = new double[2][10];
-		killerNewProbabilities = new double[2][10];
-		
-		//other variables
-		otherCurrentWeight = 0;
-		otherAddedWeight = 0;
-		otherrSubtractedWeight = 0;
-		otherRemainingWeight = 0;
-		otherTotalAmtSubtracted = 0;
-		otherResult = 0;
-		otherOldProbabilities = new double[2][10];
-		otherNewProbabilities = new double[2][10];
-		
-		//10x10 array for the total probabilities of all of the player's stats
-		currProbabilities = new double[10][10];
-		newProbabilities = new double[10][10];
-		
-		//variables for the killer piece and the killer player
-		killer = null;
-		killerindex = -1;
-		iterator = null;
-		pieces = new ArrayList<Piece>();
-		
-		//weight remaining in the column of the 10x10 to be distributed
-		columnWeightRemaining = 0;
-		
-		
-		
-		
 		//transforms the player's pieces (iterator) into arraylist
 		iterator = player.getPieces();
 		while(iterator.hasNext())
@@ -95,35 +57,67 @@ public class CalculateStats
 				killerindex = x;
 			}
 		}
-		//killer = pumatay;
-		killerOldProbabilities = killer.getProbability();
+
+		double[][] kp = killer.getProbability();				
+		for(int y = 0; y < 2; y++)
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				killerOldProbabilities[y][x] = kp[y][x];
+			}
+		}
+		//killerOldProbabilities = killer.getProbability();
+		
+		//System.arraycopy(killer.getProbability(), 0, killerOldProbabilities, 0, killer.getProbability().length);
 		
 		double[][] temporary = new double[2][10];
 		//placing the pieces' probabilities in the 10x10 array
 		for(int x = 0; x < 10; x++) // row
 		{
-			temporary = player.getPiecesArraylist().get(x).getProbability();
-			currProbabilities[x] = temporary[1];
-		}
+			double[][] temp = player.getPiecesArraylist().get(x).getProbability();
+			for(int z = 0 ; z < 2; z++)
+			{
+				for(int y = 0; y < 10; y++)
+				{
+					temporary[z][y] = temp[z][y];
+				}
+			}
 		
-		System.out.println("10x10 is:");
-		System.out.println("" + temporary[0][0] + "  "  + temporary[0][1] + "  " + temporary[0][2] + "  " + temporary[0][3] + "  "
-				 + temporary[0][4] + "  " + temporary[0][5] + "  " + temporary[0][6] + "  " + temporary[0][7] + "  " + temporary[0][8] + "  " + temporary[0][9] + "  ");
-		
-		for(int x = 0; x < 10; x++)
-		{
-			System.out.println("" + currProbabilities[x][0] + "  "  + currProbabilities[x][1] + "  " + currProbabilities[x][2] + "  " + currProbabilities[x][3] + "  "
-					 + currProbabilities[x][4] + "  " + currProbabilities[x][5] + "  " + currProbabilities[x][6] + "  " + currProbabilities[x][7] + "  " + currProbabilities[x][8] + "  " + currProbabilities[x][9] + "  ");
+			for(int y = 0; y < 10; y++)
+			{
+				currProbabilities[x][y] = temporary[1][y];
+			}
+					
+			//temporary = player.getPiecesArraylist().get(x).getProbability();
+			//currProbabilities[x] = temporary[1];
 		}
 		
 		// recopying the 10x10
-		newProbabilities = currProbabilities;
+		for(int x = 0; x < 10; x++)
+		{
+			for(int y = 0; y < 10; y++)
+			{
+				newProbabilities[x][y] = currProbabilities[x][y];
+			}
+		}
+		//newProbabilities = currProbabilities;
 		
 		//Compare killed and killer to know which columns to 0 out
 		killerTotalAmtSubtracted = 0;
 		iterator = killer.getKills();
 		ArrayList<Piece> kList = new ArrayList<Piece>();
-		double[][] killerprobability = killer.getProbability();
+		//double[][] killerprobability = killer.getProbability();
+		
+		double[][] killerprobability = new double[2][10];
+		double[][] killp = killer.getProbability();
+		for(int x = 0; x < 2; x++)
+		{
+			for(int y = 0; y < 10; y++)
+			{
+				killerprobability[x][y] = killp[x][y];
+			}
+		}
+		
 		
 		while(iterator.hasNext())
 		{
@@ -176,23 +170,26 @@ public class CalculateStats
 		player.getPiecesArraylist().get(killerindex).setProbabilities(killerprobability[1]);
 	
 		//getting the new probabilities of the killer
-		killerNewProbabilities = killerprobability;
+		//killerNewProbabilities = killerprobability;
+		
+		for(int x = 0; x < 2; x++)
+		{
+			for(int y = 0; y < 10; y++)
+			{
+				killerNewProbabilities[x][y] = killerprobability[x][y];
+			}
+		}
 		
 		//Placing those current values in the 10x10 array
-		currProbabilities[killerindex] = killerprobability[1];
+		//currProbabilities[killerindex] = killerprobability[1];
 
-		// Distribute the probabilities per column
-
-		System.out.println("10x10 is:");
-		System.out.println("" + killerprobability[0][0] + "  "  + killerprobability[0][1] + "  " + killerprobability[0][2] + "  " + killerprobability[0][3] + "  "
-				 + killerprobability[0][4] + "  " + killerprobability[0][5] + "  " + killerprobability[0][6] + "  " + killerprobability[0][7] + "  " + killerprobability[0][8] + "  " + killerprobability[0][9] + "  ");
-		
 		for(int x = 0; x < 10; x++)
 		{
-			System.out.println("" + currProbabilities[x][0] + "  "  + currProbabilities[x][1] + "  " + currProbabilities[x][2] + "  " + currProbabilities[x][3] + "  "
-					 + currProbabilities[x][4] + "  " + currProbabilities[x][5] + "  " + currProbabilities[x][6] + "  " + currProbabilities[x][7] + "  " + currProbabilities[x][8] + "  " + currProbabilities[x][9] + "  ");
+			currProbabilities[killerindex][x] = killerprobability[1][x];
 		}
-
+		
+		// Distribute the probabilities per column
+		
 		for(int y = 0; y < 10; y++) // columns
 		{
 
@@ -200,15 +197,14 @@ public class CalculateStats
 			{
 				if(x != killerindex) //if it isn't in the killer's row
 				{
-					columnWeightRemaining = 1.0 - currProbabilities[killerindex][y];
-					System.out.println("cr = " + columnWeightRemaining);
+					columnWeightRemaining = 1.0 - newProbabilities[killerindex][y];
 					if(killerOldProbabilities[1][y] < killerNewProbabilities[1][y]) // addition in the probability of the killer occured
 					{
-						killerAddedWeight = killerNewProbabilities[1][y] - currProbabilities[killerindex][y] * -1; //will subtract in the others
+						killerAddedWeight = killerOldProbabilities[1][y] - currProbabilities[killerindex][y]; //will subtract in the others
 					}
 					else if(killerOldProbabilities[1][y] > killerNewProbabilities[1][y]) // subtraction in the probability of the killer occured
 					{
-						killerAddedWeight = currProbabilities[killerindex][y] - killerNewProbabilities[1][y]; // will add in the others
+						killerAddedWeight = currProbabilities[killerindex][y] - killerOldProbabilities[1][y]*-1; // will add in the others
 					}
 					otherAddedWeight = killerAddedWeight * currProbabilities[x][y]/columnWeightRemaining;
 					currProbabilities[x][y] = currProbabilities[x][y] + otherAddedWeight;
@@ -216,7 +212,6 @@ public class CalculateStats
 			}
 		
 		}
-		
 		
 		/*for(int y = 0; y < 10; y++) // columns
 		{
