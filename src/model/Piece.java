@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -174,16 +175,19 @@ public abstract class Piece{
 	
 	public String getStats(){
 		String st="";
-		st+= "General of the Army: "+ probability[1][0]+"%\n";
-		st+= "Lieutenant General: "+probability[1][1] +"%\n";
-		st+= "Colonel: "+ probability[1][2]+"%\n";
-		st+= "Captain: "+probability[1][3]+"%\n";
-		st+= "First Lieutenant: "+probability[1][4]+"%\n";
-		st+= "Spy: "+probability[1][8]+"%\n";
-		st+= "Private 1: "+ probability[1][5] + "%\n";
-		st+= "Private 2: " + probability[1][6] + "%\n"; 
-		st+= "Private 3: " + probability[1][7] +"%\n";
-		st+= "Flag: "+probability[1][9]+"%\n";
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(4);
+		st+= "General of the Army: "+ df.format(probability[1][0] *100) +"%\n";
+		st+= "Lieutenant General: "+df.format(probability[1][1]*100) +"%\n";
+		st+= "Colonel: "+ df.format(probability[1][2]*100)+"%\n";
+		st+= "Captain: "+df.format(probability[1][3]*100)+"%\n";
+		st+= "First Lieutenant: "+df.format(probability[1][4]*100)+"%\n";
+		st+= "Spy: "+df.format(probability[1][8]*100)+"%\n";
+		st+= "Private: " + df.format((probability[1][5]+probability[1][6]+probability[1][7])*100) + "%\n";
+		//st+= "Private 1: "+ probability[1][5] + "%\n";
+		//st+= "Private 2: " + probability[1][6] + "%\n"; 
+		//st+= "Private 3: " + probability[1][7] +"%\n";
+		st+= "Flag: "+df.format(probability[1][9]*100)+"%\n";
 		return st;
 	}
 	
