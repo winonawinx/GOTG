@@ -116,7 +116,9 @@ public abstract class Piece{
 	public void setDead(Piece killer){
 		isAlive=false;
 		this.killer=killer;
-		System.out.println("In setDead killer is " + killer.getName());
+		System.out.println("In setDead killer is " + killer.getName());		
+		CalculateDead calcd = new CalculateDead();
+		probability = calcd.computeStats(master, this);
 	}
 	
 	public Piece getKiller(){
@@ -139,6 +141,11 @@ public abstract class Piece{
 		kills.add(pc);
 		CalculateStats calc = new CalculateStats();
 		probability = calc.computeStats(master, pc.getKiller());
+		
+//		CalculateDead calcd = new CalculateDead();
+//		probability = calcd.computeStats(pc.getMaster(), pc);
+
+		
 	}
 	
 	public Iterator getKills(){
