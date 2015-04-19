@@ -371,7 +371,10 @@ System.out.println("*>*>*>*>**>*>*>*>*>*>*>*>*>*>*>*>*>*>**>*>>*>**>*>*>>*>*>*>*
 		System.out.printf("%d ", x);
 		for(int y = 0; y < 10; y++)
 		{
-			newProbabilities[x][y] = currProbabilities[x][y];
+			if(Double.isNaN(currProbabilities[x][y]) || currProbabilities[x][y] < 0)
+				newProbabilities[x][y] = 0;
+			else{
+				newProbabilities[x][y] = currProbabilities[x][y];}
 			System.out.printf("%.2f ", newProbabilities[x][y]);
 		}
 		System.out.println();
@@ -380,7 +383,7 @@ System.out.println("*>*>*>*>**>*>*>*>*>*>*>*>*>*>*>*>*>*>**>*>>*>**>*>*>>*>*>*>*
 	// updating each of the pieces' probabilities
 	for(int x = 0; x < 10; x++)
 	{
-		player.getPiecesArraylist().get(x).setProbabilities(currProbabilities[x]);
+		player.getPiecesArraylist().get(x).setProbabilities(newProbabilities[x]);
 	}
 /*-----------------------------------------------------------------------------------------*/
  

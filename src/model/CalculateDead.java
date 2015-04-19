@@ -121,25 +121,24 @@ public class CalculateDead
 	
 		
 		//kung same YUNG PIECES
-		
-		if(killed.getType() == killer.getType())
+		if(killer.getType() == killed.getType())
 		{
 			for(int x = 0; x < 10; x++)
 			{
-				if(killer.getType() != killedprobability[0][x])
+				if(killed.getType() != killedprobability[0][x])
 				{
 					killedTotalAmtSubtracted += killedprobability[1][x];
 					killedprobability[1][x] = 0.0;
 				}
 			}
 		}
-		else 
+		else
 		{
 			System.out.println("KILLED: " + killer.getName());
 			//sets 0 to pieces it can't be
 			if(killer.getType() != 2)
 			{
-			
+				
 				for(int x = 0; x < 10; x++)
 				{
 					if(killer.getType() <= killedprobability[0][x] && killedprobability[0][x] > 2)
@@ -171,23 +170,21 @@ public class CalculateDead
 						killedprobability[1][x] = 0;
 					}
 				}
-			}	
-			
-		}
-
-		//loop to place killed's new probs in 10x10
-		for(int x = 0; x < 10; x++)
-		{
-			for(int y = 0; y < 10; y++)
+			}		
+	
+			//loop to place killed's new probs in 10x10
+			for(int x = 0; x < 10; x++)
 			{
-				if(x == killedindex)
+				for(int y = 0; y < 10; y++)
 				{
-					currProbabilities[x][y] = killedprobability[1][y];
+					if(x == killedindex)
+					{
+						currProbabilities[x][y] = killedprobability[1][y];
+					}
 				}
 			}
+			
 		}
-		
-		
 		int isAllZero = 0;
 		int isOddx = -1;
 		int isOddy = -1;
@@ -372,7 +369,10 @@ System.out.println("*>*>*>*>**>*>*>*>*>*>*>*>*>*>*>*>*>*>**>*>>*>**>*>*>>*>*>*>*
 		System.out.printf("%d ", x);
 		for(int y = 0; y < 10; y++)
 		{
-			newProbabilities[x][y] = currProbabilities[x][y];
+			if(Double.isNaN(currProbabilities[x][y]) || currProbabilities[x][y] < 0)
+				newProbabilities[x][y] = 0;
+			else{
+				newProbabilities[x][y] = currProbabilities[x][y];}
 			System.out.printf("%.2f ", newProbabilities[x][y]);
 		}
 		System.out.println();
@@ -381,7 +381,7 @@ System.out.println("*>*>*>*>**>*>*>*>*>*>*>*>*>*>*>*>*>*>**>*>>*>**>*>*>>*>*>*>*
 	// updating each of the pieces' probabilities
 	for(int x = 0; x < 10; x++)
 	{
-		player.getPiecesArraylist().get(x).setProbabilities(currProbabilities[x]);
+		player.getPiecesArraylist().get(x).setProbabilities(newProbabilities[x]);
 	}
 /*-----------------------------------------------------------------------------------------*/
  
