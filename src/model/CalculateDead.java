@@ -89,24 +89,24 @@ public class CalculateDead
 		}
 		
 		System.out.println("BEFORE CALCULATION RECOPYING the 10X10 array probabilities: ");
-		// recopying the 10x10
+//		 recopying the 10x10
 		for(int x = 0; x < 10; x++)
 		{
-			System.out.printf("%d ", x);
+//			System.out.printf("%d ", x);
 			for(int y = 0; y < 10; y++)
 			{
 				newProbabilities[x][y] = currProbabilities[x][y];
-				System.out.printf("%.2f ", newProbabilities[x][y] );
+//				System.out.printf("%.2f ", newProbabilities[x][y] );
 			}
-			System.out.println();
+//			System.out.println();
 		}
 		
 		
-		//Compare killed and killed to know which columns to 0 out
+//		Compare killed and killed to know which columns to 0 out
 		killedTotalAmtSubtracted = 0;
 		Piece killer = killed.getKiller();
 		ArrayList<Piece> kList = new ArrayList<Piece>();
-		//double[][] killedprobability = killed.getProbability();
+//		double[][] killedprobability = killed.getProbability();
 		
 		
 		double[][] killedprobability = new double[2][10];
@@ -121,6 +121,7 @@ public class CalculateDead
 	
 		
 		//kung same YUNG PIECES
+		
 		if(killed.getType() == killer.getType())
 		{
 			for(int x = 0; x < 10; x++)
@@ -132,22 +133,28 @@ public class CalculateDead
 				}
 			}
 		}
-		else
+		else 
 		{
 			System.out.println("KILLED: " + killer.getName());
 			//sets 0 to pieces it can't be
 			if(killer.getType() != 2)
 			{
-				
+			
 				for(int x = 0; x < 10; x++)
 				{
-					if(killer.getType() >= killedprobability[0][x] && killedprobability[0][x] != 2)
+					if(killer.getType() <= killedprobability[0][x] && killedprobability[0][x] > 2)
 					{
 						killedTotalAmtSubtracted += killedprobability[1][x];
 						killedprobability[1][x] = 0;
 					}
-					else if(killedprobability[0][x] == 2 && killer.getType() % 2 != 0)
+					else if(killedprobability[0][x] == 2 && killer.getType() % 2 == 0)
 					{
+						killedTotalAmtSubtracted += killedprobability[1][x];
+						killedprobability[1][x] = 0;
+					}
+					else if (killedprobability[0][x] == 1)
+					{
+						System.out.println("FLAG SET ZERO KA PLEASE: !");
 						killedTotalAmtSubtracted += killedprobability[1][x];
 						killedprobability[1][x] = 0;
 					}
@@ -155,19 +162,18 @@ public class CalculateDead
 			}
 			else if(killer.getType() == 2)
 			{
-
+	
 				for(int x = 0; x < 10; x++)
 				{
-					if(killedprobability[0][x] != 3)
+					if(killedprobability[0][x] == 3)
 					{
 						killedTotalAmtSubtracted += killedprobability[1][x];
 						killedprobability[1][x] = 0;
 					}
 				}
-			}
+			}	
 			
 		}
-		
 
 		//loop to place killed's new probs in 10x10
 		for(int x = 0; x < 10; x++)
@@ -228,7 +234,7 @@ public class CalculateDead
 				if(x != killedindex) //if it isn't in the killed's row
 				{
 					columnWeightRemaining = 1.0 - newProbabilities[killedindex][y];
-					System.out.println("Old killed prob["+y+"] : "+ killedOldProbabilities[1][y]+" NEW killed PROB ["+ y + "]"+ killedNewProbabilities[1][y]);
+//					System.out.println("Old killed prob["+y+"] : "+ killedOldProbabilities[1][y]+" NEW killed PROB ["+ y + "]"+ killedNewProbabilities[1][y]);
 					if(killedOldProbabilities[1][y] < killedNewProbabilities[1][y]) // addition in the probability of the killed occured
 					{
 						killedAddedWeight = killedOldProbabilities[1][y] - currProbabilities[killedindex][y]; //will subtract in the others
